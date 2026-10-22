@@ -142,7 +142,7 @@ Tối nay có buổi Webinar Ohana Meet trực tiếp giải đáp mọi thắc 
 ```
 * **Nút bấm:**
   * `🎟️ Đăng ký giữ chỗ Webinar` -> Gắn Tag: `event-registered` (+20đ), Chuyển sang `FORM_THU_PHONE`
-  * `💬 Tham gia Nhóm Zalo Hỗ Trợ` -> `https://zalo.me/g/dkw23jqczybbdk0fxj`
+  * `💬 Tham gia Nhóm Zalo Hỗ Trợ` -> `https://zalo.me/g/8fldfg1glzsy43berjgd`
   * `🎥 Xem 5 Video Onboarding 60 Phút` -> Chuyển sang `BLOCK_VIDEO_ONBOARDING`
 
 ---

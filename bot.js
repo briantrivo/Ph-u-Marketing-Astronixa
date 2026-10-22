@@ -191,7 +191,7 @@ if (bot) {
       ...Markup.inlineKeyboard([
         [Markup.button.callback('🎟️ Đăng ký giữ chỗ Webinar', 'REGISTER_WEBINAR')],
         [Markup.button.callback('📚 Xem 5 Video Onboarding Chuẩn Hóa', 'VIEW_ONBOARDING')],
-        [Markup.button.url('💬 Tham gia Nhóm Zalo Hỗ Trợ', 'https://zalo.me/g/dkw23jqczybbdk0fxj')]
+        [Markup.button.url('💬 Tham gia Nhóm Zalo Hỗ Trợ', 'https://zalo.me/g/8fldfg1glzsy43berjgd')]
       ])
     });
 
@@ -250,7 +250,7 @@ if (bot) {
 
     // Tin nhắn mặc định nếu bot không nhận diện được
     const fallbackMsg = `Dạ em đã ghi nhận tin nhắn của anh/chị. Em là trợ lý tự động của OHANA-C.\n` +
-      `Nếu anh/chị cần hỗ trợ kỹ thuật hoặc tư vấn 1-1 trực tiếp, anh/chị có thể để lại số điện thoại hoặc nhắn trực tiếp cho đội ngũ hỗ trợ tại nhóm Zalo nhé: https://zalo.me/g/dkw23jqczybbdk0fxj`;
+      `Nếu anh/chị cần hỗ trợ kỹ thuật hoặc tư vấn 1-1 trực tiếp, anh/chị có thể để lại số điện thoại hoặc nhắn trực tiếp cho đội ngũ hỗ trợ tại nhóm Zalo nhé: https://zalo.me/g/8fldfg1glzsy43berjgd`;
 
     await ctx.reply(fallbackMsg);
   });

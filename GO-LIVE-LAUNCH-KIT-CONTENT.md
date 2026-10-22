@@ -39,7 +39,7 @@ Hẹn gặp bạn trong cộng đồng OHANA-C và các buổi Webinar Ohana Mee
 ---
 
 ### 📌 MẪU 2: BÀI ĐĂNG KÍCH HOẠT NHÓM ZALO & TELEGRAM CỘNG ĐỒNG
-* **Kênh:** Nhóm Zalo OHANA-C (`https://zalo.me/g/dkw23jqczybbdk0fxj`) & Telegram (`https://t.me/ohana_astronixa`)
+* **Kênh:** Nhóm Zalo OHANA-C (`https://zalo.me/g/8fldfg1glzsy43berjgd`) & Telegram (`https://t.me/ohana_astronixa`)
 * **Thời điểm:** 09:15 Sáng Ngày 0
 
 ```text

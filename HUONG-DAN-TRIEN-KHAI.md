@@ -58,7 +58,7 @@ Mọi thành viên trong đội ngũ vận hành và cộng đồng Affiliate OH
 ## 📞 4. BỘ ĐƯỜNG DẪN CHÍNH THỨC CỦA CHIẾN DỊCH
 
 * **Fanpage Astronixa Việt Nam:** [https://www.facebook.com/share/1BFbufpUaZ](https://www.facebook.com/share/1BFbufpUaZ)
-* **Nhóm Zalo Cộng Đồng OHANA-C:** [https://zalo.me/g/dkw23jqczybbdk0fxj](https://zalo.me/g/dkw23jqczybbdk0fxj)
+* **Nhóm Zalo Cộng Đồng OHANA-C:** [https://zalo.me/g/8fldfg1glzsy43berjgd](https://zalo.me/g/8fldfg1glzsy43berjgd)
 * **Kênh Telegram Chính Thức:** [https://t.me/ohana_astronixa](https://t.me/ohana_astronixa)
 * **Kênh YouTube Việt Nam:** [https://www.youtube.com/@astronixavn](https://www.youtube.com/@astronixavn)
 * **Bộ 5 Video Chuẩn Hóa Onboarding:**
