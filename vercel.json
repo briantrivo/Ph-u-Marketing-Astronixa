@@ -2,8 +2,7 @@
   "version": 2,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index.js" },
-    { "source": "/admin", "destination": "/public/admin.html" },
-    { "source": "/ohana-11-manh-ghep.pdf", "destination": "/public/ohana-11-manh-ghep.pdf" },
-    { "source": "/(.*)", "destination": "/public/$1" }
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/(.*)", "destination": "/$1" }
   ]
 }
