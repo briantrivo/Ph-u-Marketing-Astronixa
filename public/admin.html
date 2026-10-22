@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OHANA-C Funnel Cockpit | Bảng Điều Khiển Vận Hành</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1210;
+      --card-bg: #14201c;
+      --card-border: #1f342e;
+      --primary: #0e8a73;
+      --primary-light: #7fe0bd;
+      --text: #e8f3ef;
+      --text-muted: #8ea89d;
+      --hot: #ff5e57;
+      --warm: #ffa801;
+      --cold: #0be881;
+      --blue: #4bcffa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 24px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .brand h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: #fff; }
+    .brand p { font-size: 13px; color: var(--text-muted); }
+    .header-actions { display: flex; gap: 10px; }
+    .btn {
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: #0c7662; }
+    .btn-outline { background: transparent; border-color: var(--card-border); color: var(--text); }
+    .btn-outline:hover { background: var(--card-bg); border-color: var(--primary-light); }
+    
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card .label { font-size: 12.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .stat-card .value { font-size: 28px; font-weight: 800; color: #fff; }
+    .stat-card.hot .value { color: var(--hot); }
+    .stat-card.warm .value { color: var(--warm); }
+    .stat-card.cold .value { color: var(--cold); }
+    
+    /* Control Bar & Test Flows */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 28px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .test-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn-hot { background: rgba(255, 94, 87, 0.15); border: 1px solid var(--hot); color: #ff8b86; }
+    .btn-hot:hover { background: var(--hot); color: #fff; }
+    .btn-warm { background: rgba(255, 168, 1, 0.15); border: 1px solid var(--warm); color: #ffd37f; }
+    .btn-warm:hover { background: var(--warm); color: #000; }
+    .btn-cold { background: rgba(11, 232, 129, 0.15); border: 1px solid var(--cold); color: #7af8bd; }
+    .btn-cold:hover { background: var(--cold); color: #000; }
+    
+    /* Table */
+    .table-container { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th { text-align: left; padding: 12px 14px; color: var(--text-muted); border-bottom: 1px solid var(--card-border); font-weight: 600; font-size: 12px; }
+    td { padding: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .badge-hot { background: rgba(255, 94, 87, 0.2); color: var(--hot); }
+    .badge-warm { background: rgba(255, 168, 1, 0.2); color: var(--warm); }
+    .badge-cold { background: rgba(11, 232, 129, 0.2); color: var(--cold); }
+    
+    .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.07);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin: 1px;
+      color: #b0c9be;
+    }
+    
+    #status-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      display: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1>OHANA-C Funnel Marketing Cockpit</h1>
+        <p>Hệ thống tự vận hành 24/7 · Bảng điều khiển chiến dịch & Tiếp nhận Lead</p>
+      </div>
+      <div class="header-actions">
+        <a href="/" target="_blank" class="btn btn-outline">🌐 Mở Landing Page</a>
+        <a href="/ohana-11-manh-ghep.pdf" target="_blank" class="btn btn-outline">📄 Tải Ebook 0đ</a>
+        <a href="/api/export-csv" class="btn btn-primary">📥 Xuất File CSV</a>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="label">Tổng Lead Tiếp Nhận</div>
+        <div class="value" id="val-total">0</div>
+      </div>
+      <div class="stat-card hot">
+        <div class="label">Lead Nóng (🔥 70+)</div>
+        <div class="value" id="val-hot">0</div>
+      </div>
+      <div class="stat-card warm">
+        <div class="label">Lead Ấm (🌤️ 35-69)</div>
+        <div class="value" id="val-warm">0</div>
+      </div>
+      <div class="stat-card cold">
+        <div class="label">Lead Lạnh (❄️ &lt;35)</div>
+        <div class="value" id="val-cold">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Ý Định Affiliate</div>
+        <div class="value" id="val-aff">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Trải Nghiệm App</div>
+        <div class="value" id="val-prod">0</div>
+      </div>
+    </div>
+
+    <!-- Quick Test Runner (Tuân thủ Quy tắc Checklist Go-Live: Đã test thông 3 luồng) -->
+    <div class="card">
+      <div class="card-title">
+        <span>🧪 Bộ Kiểm Thử Tự Động (Go-Live 3-Stream Verification)</span>
+        <small style="color:var(--text-muted); font-weight:normal;">Bấm nút để mô phỏng và kiểm tra luồng dữ liệu tức thì</small>
+      </div>
+      <div class="test-buttons">
+        <button class="btn btn-hot" onclick="runTestFlow('hot')">🔥 Bắn Test: Lead Nóng (75đ - Affiliate)</button>
+        <button class="btn btn-warm" onclick="runTestFlow('warm')">🌤️ Bắn Test: Lead Ấm (50đ - Trải nghiệm App)</button>
+        <button class="btn btn-cold" onclick="runTestFlow('cold')">❄️ Bắn Test: Lead Lạnh (20đ - Chỉ nhận Ebook)</button>
+        <button class="btn btn-outline" onclick="runTestFlow('dup')">🔄 Bắn Test: Trùng SĐT (De-duplication)</button>
+        <button class="btn btn-outline" onclick="loadData()">🔄 Làm mới danh sách</button>
+      </div>
+    </div>
+
+    <!-- Leads Table -->
+    <div class="card">
+      <div class="card-title">
+        <span>📋 Danh Sách Lead Mới Nhất</span>
+        <span id="sync-time" style="font-size:12px; color:var(--text-muted); font-weight:normal;">Cập nhật: --:--:--</span>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Họ và Tên</th>
+              <th>Số Zalo / Phone</th>
+              <th>Email</th>
+              <th>Phân Hạng</th>
+              <th>Điểm</th>
+              <th>Mục Tiêu & ICP</th>
+              <th>Nhãn Tags CRM</th>
+              <th>Thời Gian</th>
+            </tr>
+          </thead>
+          <tbody id="leads-tbody">
+            <tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:30px;">Đang tải dữ liệu lead...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="status-toast"></div>
+
+  <script>
+    function showToast(msg) {
+      var t = document.getElementById('status-toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(function() { t.style.display = 'none'; }, 3500);
+    }
+
+    function loadData() {
+      fetch('/api/stats')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data && data.stats) {
+            var s = data.stats;
+            document.getElementById('val-total').textContent = s.totalLeads || 0;
+            document.getElementById('val-hot').textContent = s.hotLeads || 0;
+            document.getElementById('val-warm').textContent = s.warmLeads || 0;
+            document.getElementById('val-cold').textContent = s.coldLeads || 0;
+            document.getElementById('val-aff').textContent = s.affiliatePartners || 0;
+            document.getElementById('val-prod').textContent = s.productUsers || 0;
+          }
+        });
+
+      fetch('/api/leads')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var tbody = document.getElementById('leads-tbody');
+          document.getElementById('sync-time').textContent = 'Cập nhật: ' + new Date().toLocaleTimeString('vi-VN');
+          if (!data || !data.leads || data.leads.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:30px;">Chưa có dữ liệu lead. Bấm các nút test phía trên hoặc gửi form từ Landing Page.</td></tr>';
+            return;
+          }
+
+          var sorted = data.leads.sort(function(a, b) {
+            return new Date(b.created_at || b.updated_at) - new Date(a.created_at || a.updated_at);
+          });
+
+          tbody.innerHTML = sorted.map(function(u) {
+            var cat = u.lead_category || 'COLD';
+            var badgeClass = cat === 'HOT' ? 'badge-hot' : (cat === 'WARM' ? 'badge-warm' : 'badge-cold');
+            var tagsHtml = (u.tags || []).map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('');
+
+            return '<tr>' +
+              '<td><b>' + (u.name || u.first_name || 'Khách hàng') + '</b></td>' +
+              '<td><code>' + (u.phone || 'Chưa có') + '</code></td>' +
+              '<td>' + (u.email || '--') + '</td>' +
+              '<td><span class="badge ' + badgeClass + '">' + cat + '</span></td>' +
+              '<td><b style="color:' + (cat==='HOT'?'var(--hot)':(cat==='WARM'?'var(--warm)':'var(--cold)')) + '">' + (u.score || 0) + '</b></td>' +
+              '<td><div>' + (u.goal || '') + '</div><small style="color:var(--text-muted)">' + (u.icp || u.persona || '') + '</small></td>' +
+              '<td>' + tagsHtml + '</td>' +
+              '<td style="font-size:12px; color:var(--text-muted)">' + new Date(u.created_at).toLocaleString('vi-VN') + '</td>' +
+            '</tr>';
+          }).join('');
+        });
+    }
+
+    function runTestFlow(type) {
+      showToast('Đang kích hoạt kiểm thử luồng ' + type.toUpperCase() + '...');
+      fetch('/api/test-flow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: type })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (res.success) {
+          showToast(res.message);
+          setTimeout(loadData, 500);
+        } else {
+          showToast('Lỗi test: ' + res.error);
+        }
+      })
+      .catch(function(err) {
+        showToast('Lỗi gửi test flow: ' + err.message);
+      });
+    }
+
+    loadData();
+    setInterval(loadData, 15000);
+  </script>
+</body>
+</html>

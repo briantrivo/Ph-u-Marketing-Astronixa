@@ -1,0 +1,141 @@
+{
+  "name": "Ohana Affiliate Marketing Funnel Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ohana-lead-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "node-webhook-inbound",
+      "name": "Webhook Nhận Lead Mới",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "lead_name",
+              "value": "={{ $json.body.name || 'Khách hàng' }}"
+            },
+            {
+              "name": "lead_phone",
+              "value": "={{ $json.body.phone || '' }}"
+            },
+            {
+              "name": "lead_persona",
+              "value": "={{ $json.body.persona || 'Affiliate Partner' }}"
+            },
+            {
+              "name": "lead_source",
+              "value": "={{ $json.body.source || 'Facebook Ads / Landing' }}"
+            },
+            {
+              "name": "received_time",
+              "value": "={{ $now.setZone('Asia/Ho_Chi_Minh').toFormat('dd/MM/yyyy HH:mm:ss') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-set-data",
+      "name": "Chuẩn Hóa Dữ Liệu Lead",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.ADMIN_TELEGRAM_ID || '123456789' }}",
+        "text": "=🔔 *CÓ LEAD MỚI VÀO PHỄU OHANA!*\n\n👤 Họ tên: {{ $json.lead_name }}\n📞 Điện thoại: {{ $json.lead_phone }}\n🏷️ Nhu cầu: {{ $json.lead_persona }}\n🌐 Nguồn: {{ $json.lead_source }}\n⏰ Thời gian: {{ $json.received_time }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "node-telegram-alert",
+      "name": "Bắn Cảnh Báo Telegram Admin",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        720,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "sheetId": "YOUR_GOOGLE_SHEET_ID_HERE",
+        "range": "A:E",
+        "options": {}
+      },
+      "id": "node-google-sheet",
+      "name": "Lưu Vào Google Sheet CRM",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        720,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"message\": \"Lead đã được tiếp nhận và xử lý tự động trong phễu Ohana.\"\n}",
+        "options": {}
+      },
+      "id": "node-respond-webhook",
+      "name": "Phản Hồi Webhook 200 OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        960,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Nhận Lead Mới": {
+      "main": [
+        [
+          {
+            "node": "Chuẩn Hóa Dữ Liệu Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chuẩn Hóa Dữ Liệu Lead": {
+      "main": [
+        [
+          {
+            "node": "Bắn Cảnh Báo Telegram Admin",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Lưu Vào Google Sheet CRM",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Phản Hồi Webhook 200 OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {}
+}
